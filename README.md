@@ -102,7 +102,7 @@ UC_Dev
 
 ## Deployment 📦
 
-_Agrega notas adicionales sobre como hacer deploy o ver a darvin_
+_Agrega notas adicionales sobre como hacer deploy_
 
 ## Construido con 🛠️
 
