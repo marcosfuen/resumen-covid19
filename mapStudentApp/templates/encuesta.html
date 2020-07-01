@@ -1,0 +1,751 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Formulario | Encuesta | Estudiantes</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'css/adminlte.min.css' %}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+
+<body class="hold-transition sidebar-mini sidebar-collapse">
+  <!-- Site wrapper -->
+  <div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="{% url 'mapStudentApp:profile' %}" class="nav-link">Inicio</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="mailto:reportes@reduc.edu.cu" title = "reportes@reduc.edu.cu"  class="nav-link">Contactenos</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="{% url 'mapStudentApp:incidencia' %}" class="nav-link">Reportar Incidencias</a>
+        </li>
+      </ul>
+
+      <!-- SEARCH FORM -->
+      <!-- <form class="form-inline ml-3">
+        <div class="input-group input-group-sm">
+          <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-navbar" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </form> -->
+
+      <!-- Right navbar links -->
+      <ul class="navbar-nav ml-auto">
+        <!-- <li class="nav-item">
+          <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+            <i class="fas fa-th-large"></i>
+          </a>
+        </li> -->
+        <li class="nav-item">
+          <a href="{% url 'mapStudentApp:logout' %}" title = "Salir de la Aplicación" class="nav-link"><i class="fas fa-door-closed"></i></a>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <a href="{% url 'mapStudentApp:profile' %}" class="brand-link">
+        <img src="{% static 'img/students.png' %}" alt="Mapa Estudiante" class="brand-image img-circle elevation-3"
+          style="opacity: .8">
+        <span class="brand-text font-weight-light">Encuestas</span>
+      </a>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+               {% if user.is_superuser or user.is_staff %}
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Administración
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'admin:index' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Todos</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'admin:auth_group_changelist' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Grupos</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'admin:auth_user_changelist' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Usuarios</p>
+                  </a>
+                </li>
+                <hr>
+                <li class="nav-item">
+                  <a href="{% url 'admin:mapStudentApp_zona_changelist' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Zona</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'admin:mapStudentApp_studentinformation_changelist' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Estudiantes</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'admin:mapStudentApp_encuesta_changelist' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Encuestas</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'admin:mapStudentApp_incidencias_changelist' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Incidencias</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'admin:mapStudentApp_resumen_changelist' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Resumen</p>
+                  </a>
+                </li>
+                <hr>
+                <li class="nav-item">
+                  <a href="/api/" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>API</p>
+                  </a>
+                </li>
+                <hr>
+              </ul>
+            </li>
+            {% endif %}
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-map"></i>
+                <p>
+                  Mapas
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'mapStudentApp:profile' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Zonas</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            {% if user.is_superuser or user.is_staff %}
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-project-diagram"></i>
+                  <p>
+                      Zonas
+                      <i class="right fas fa-angle-left"></i>
+                  </p>
+              </a>
+              <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                      <a href="{% url 'mapStudentApp:zona' %}" class="nav-link">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>Crear zona</p>
+                      </a>
+                  </li>
+              </ul>
+          </li>
+          {% endif %}
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-atlas"></i>
+              <p>
+                Encuesta
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:encuesta' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Formulario</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p>
+                Resumen
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:totalPorZona' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Resumen por Zona</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:totalesEncuestasZona' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Resumen Total</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:mapPorZona' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Resumen por Fecha</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-book-reader"></i>
+                <p>
+                  Incidencias
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'mapStudentApp:incidencia' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Formulario</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'mapStudentApp:allIncidencia' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Todas la Incidencias</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Encuesta</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="{% url 'mapStudentApp:profile' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'mapStudentApp:encuesta' %}">Accounts</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'mapStudentApp:encuesta' %}">Profile</a></li>
+                <li class="breadcrumb-item active">Encuesta</li>
+              </ol>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <!-- Default box -->
+              {% if okResumenMensaje %}
+              <div class="alert alert-success mt-2">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span
+                    class="sr-only">Close</span></button>
+                {{ okResumenMensaje }}
+              </div>
+              {% endif %}
+              {% if errorResumenMensaje %}
+              <div class="alert alert-info mt-2">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span
+                    class="sr-only">Close</span></button>
+                {{ errorResumenMensaje }}
+              </div>
+              {% endif %}
+              {% if okAddMensaje %}
+              <div class="alert alert-success mt-2">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span
+                    class="sr-only">Close</span></button>
+                {{ okAddMensaje }}
+              </div>
+              {% elif errorAddMensaje%}
+              <div class="alert alert-danger mt-2">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span
+                    class="sr-only">Close</span></button>
+                {{ errorAddMensaje }}
+              </div>
+              {% endif %}
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Resumen en el dia de las encuestas por zonas</h3>
+
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
+                      title="Collapse">
+                      <i class="fas fa-minus"></i></button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip"
+                      title="Remove">
+                      <i class="fas fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <!-- <nav class="navbar navbar-expand-lg text-dark bg-light mb-4"> -->
+                  <br>
+                  <h5 class="text-left">Resumen</h5>
+                  <hr class="mb-3 mt-0 bg-success">
+                  <form method="post" class="text-dark">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="formTwo">
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Zona </label>
+                      </div>
+                      <div class="col-8">
+                        <select name="zonaResumen" id="zonaResumen" class="form-control d-inline" required>
+                          <option value="">
+                            Seleccione un Zona
+                          </option>
+                          {% if allZone %}
+                          {% for zone in allZone %}
+                          <option value="{{ zone.id }}">
+                            {{ zone.name }}
+                          </option>
+                          {% endfor %}
+                          {% endif %}
+                        </select>
+                      </div>
+                    </div>
+                    <br>
+                    <hr class="mb-3 mt-0 bg-success">
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Cant. de adultos mayores visitados: </label>
+                      </div>
+                      <div class="col-8">
+                        <input type="number" name="totalEnc" id="totalEnc" placeholder="0" value="0" min="0"
+                          class="form-control" required>
+                      </div>
+                    </div>
+                    <br>
+                    <hr class="mb-3 mt-0 bg-success">
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Vive Solo </label>
+                      </div>
+                      <div class="col-4">
+                        <label for="viveSi" class="d-inline">Total Si: </label>
+                        <input type="number" name="viveSi" id="viveSi" placeholder="0" value="0" min="0"
+                          class="form-control" required>
+                      </div>
+                      <div class="col-4">
+                        <label for="viveNo" class="d-inline">Total No: </label>
+                        <input type="number" name="viveNo" id="viveNo" placeholder="0" value="0" min="0"
+                          class="form-control" required>
+                      </div>
+                    </div>
+                    <br>
+                    <hr class="mb-3 mt-0 bg-success">
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Recibe atención de su familia </label>
+                      </div>
+                      <div class="col-4">
+                        <label for="atetionSi" class="d-inline">Total Si: </label>
+                        <input type="number" name="atetionSi" id="atetionSi" placeholder="0" value="0" min="0"
+                          class="form-control" required>
+                      </div>
+                      <div class="col-4">
+                        <label for="atetionNo" class="d-inline">Total No: </label>
+                        <input type="number" name="atetionNo" id="atetionNo" placeholder="0" value="0" min="0"
+                          class="form-control" required>
+                      </div>
+                    </div>
+                    <br>
+                    <hr class="mb-3 mt-0 bg-success">
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Recibe atención del médico de familia </label>
+                      </div>
+                      <div class="col-4">
+                        <label for="mfSi" class="d-inline">Total Si: </label>
+                        <input type="number" name="mfSi" id="mfSi" placeholder="0" value="0" min="0"
+                          class="form-control" required>
+                      </div>
+                      <div class="col-4">
+                        <label for="mfNo" class="d-inline">Total No: </label>
+                        <input type="number" name="mfNo" id="mfNo" placeholder="0" value="0" min="0"
+                          class="form-control" required>
+                      </div>
+                    </div>
+                    <br>
+                    <hr class="mb-3 mt-0 bg-success">
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Tiene Usted servicio de mensajería para obtener los medicamentos </label>
+                      </div>
+                      <div class="col-4">
+                        <label for="servicesSi" class="d-inline">Total Si: </label>
+                        <input type="number" name="servicesSi" id="servicesSi" placeholder="0" value="0" min="0"
+                          class="form-control" required>
+                      </div>
+                      <div class="col-4">
+                        <label for="servicesNo" class="d-inline">Total No: </label>
+                        <input type="number" name="servicesNo" id="servicesNo" placeholder="0" value="0" min="0"
+                          class="form-control" required>
+                      </div>
+                    </div>
+                    <br>
+                    <hr class="mb-3 mt-0 bg-success">
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Recibe atención del SAF para obtener los alimentos </label>
+                      </div>
+                      <div class="col-4">
+                        <label for="safSi" class="d-inline">Total Si: </label>
+                        <input type="number" name="safSi" id="safSi" placeholder="0" value="0" min="0"
+                          class="form-control" required>
+                      </div>
+                      <div class="col-4">
+                        <label for="safNo" class="d-inline">Total No: </label>
+                        <input type="number" name="safNo" id="safNo" placeholder="0" value="0" min="0"
+                          class="form-control" required>
+                      </div>
+                    </div>
+                    <br>
+                    <hr class="mb-3 mt-0 bg-success">
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Tiene Usted servicio de mensajería para obtener los alimentos </label>
+                      </div>
+                      <div class="col-4">
+                        <label for="alimentSi" class="d-inline">Total Si: </label>
+                        <input type="number" name="alimentSi" id="alimentSi" placeholder="0" value="0" min="0"
+                          class="form-control" required>
+                      </div>
+                      <div class="col-4">
+                        <label for="alimentNo" class="d-inline">Total No: </label>
+                        <input type="number" name="alimentNo" id="alimentNo" placeholder="0" value="0" min="0"
+                          class="form-control" required>
+                      </div>
+                    </div>
+                    <br>
+                    <hr class="mb-3 mt-0 bg-success">
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Recibe Usted el módulo asignado por el gobierno </label>
+                      </div>
+                      <div class="col-4">
+                        <label for="alimentSi" class="d-inline">Total Si: </label>
+                        <input type="number" name="gobiernoResumenSi" id="gobiernoResumenSi" placeholder="0" value="0" min="0"
+                          class="form-control" required>
+                      </div>
+                      <div class="col-4">
+                        <label for="alimentNo" class="d-inline">Total No: </label>
+                        <input type="number" name="gobiernoResumenNo" id="gobiernoResumenNo" placeholder="0" value="0" min="0"
+                          class="form-control" required>
+                      </div>
+                    </div>
+                    <br>
+                    <hr class="mb-3 mt-0 bg-success">
+                    <div class="row">
+                      <div class="col-3">
+                        <label>Fecha del resumen </label>
+                      </div>
+                      <div class="col-4">
+                        <label for="alimentSi" class="d-inline">Fecha: </label>
+                        <input type="date" name="dateResumen" id="dateResumen" placeholder="Fecha" class="form-control" required>
+                      </div>
+                    </div>
+                    <br>
+                    <hr class="mb-3 mt-0 bg-success">
+                    <div class="col-2" style="margin-top:21px;">
+                      <button type="submit" class="btn btn-warning">Confirmar</button>
+                    </div>
+                  </form>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+
+                </div>
+                <!-- /.card-footer-->
+              </div>
+              <br>
+
+              <!-- /.card -->
+            </div>
+            <div class="col-12">
+              <!-- Default box -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Preguntas</h3>
+
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
+                      title="Collapse">
+                      <i class="fas fa-minus"></i></button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip"
+                      title="Remove">
+                      <i class="fas fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <!-- <nav class="navbar navbar-expand-lg text-dark bg-light mb-4"> -->
+                  <br>
+                  <h5 class="text-left">Abuelo</h5>
+                  <hr class="mb-3 mt-0 bg-success">
+                  <form method="post" class="text-dark">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="formOne">
+                    <div>
+                      <div class="col-12">
+                        <label for="name" class="mb-0">Nombre:</label>
+                        <input type="text" id="name" name="name" placeholder="Nombre y Apellidos" class="form-control"
+                          required>
+                      </div>
+
+                      <div class="col-12">
+                        <label for="ssex" class="d-inline">Zona: </label>
+                        <select name="zona" id="zona" class="form-control d-inline" required>
+                          <option value="">
+                            Seleccione un Zona
+                          </option>
+                          {% if allZone %}
+                          {% for zone in allZone %}
+                          <option value="{{ zone.id }}">
+                            {{ zone.name }}
+                          </option>
+                          {% endfor %}
+                          {% endif %}
+                        </select>
+
+                      </div>
+                    </div>
+                    <br>
+                    <div>
+                      <label class="mb-0">¿Vive solo?</label>
+                      <div class="col-3">
+                        <div class="custom-control custom-radio custom-control-inline">
+                          <input class="custom-control-input" type="radio" name="life" id="life_1" value="Si" checked>
+                          <label class="custom-control-label" for="life_1">
+                            Sí
+                          </label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                          <input class="custom-control-input" type="radio" name="life" id="life_2" value="No">
+                          <label class="custom-control-label" for="life_2">
+                            No
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div>
+                      <label class="mb-0">¿Recibe atención de su familia?</label>
+                      <div class="col-3">
+                        <div class="custom-control custom-radio custom-control-inline">
+                          <input class="custom-control-input" type="radio" name="atetion" id="atetion_1"
+                            value="atetionSi" checked>
+                          <label class="custom-control-label" for="atetion_1">
+                            Sí
+                          </label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                          <input class="custom-control-input" type="radio" name="atetion" id="atetion_2"
+                            value="atetionNo">
+                          <label class="custom-control-label" for="atetion_2">
+                            No
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div>
+                      <label class="mb-0">¿Recibe atención del médico de familia?</label>
+                      <div class="col-3">
+                        <div class="custom-control custom-radio custom-control-inline">
+                          <input class="custom-control-input" type="radio" name="mf" id="mf_1" value="mfSi" checked>
+                          <label class="custom-control-label" for="mf_1">
+                            Sí
+                          </label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                          <input class="custom-control-input" type="radio" name="mf" id="mf_2" value="mfNo">
+                          <label class="custom-control-label" for="mf_2">
+                            No
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div>
+                      <label class="mb-0">¿Tiene Usted servicio de mensajería para obtener los medicamentos?</label>
+                      <div class="col-3">
+                        <div class="custom-control custom-radio custom-control-inline">
+                          <input class="custom-control-input" type="radio" name="services" id="services_1"
+                            value="servicesSi" checked>
+                          <label class="custom-control-label" for="services_1">
+                            Sí
+                          </label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                          <input class="custom-control-input" type="radio" name="services" id="services_2"
+                            value="servicesNo">
+                          <label class="custom-control-label" for="services_2">
+                            No
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div>
+                      <label class="mb-0">¿Recibe atención del SAF para obtener los alimentos?</label>
+                      <div class="col-3">
+                        <div class="custom-control custom-radio custom-control-inline">
+                          <input class="custom-control-input" type="radio" name="saf" id="saf_1" value="safSi" checked>
+                          <label class="custom-control-label" for="saf_1">
+                            Sí
+                          </label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                          <input class="custom-control-input" type="radio" name="saf" id="saf_2" value="safNo">
+                          <label class="custom-control-label" for="saf_2">
+                            No
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div>
+                      <label class="mb-0">¿Tiene Usted servicio de mensajería para obtener los alimentos?</label>
+                      <div class="col-3">
+                        <div class="custom-control custom-radio custom-control-inline">
+                          <input class="custom-control-input" type="radio" name="aliment" id="aliment_1"
+                            value="alimentSi" checked>
+                          <label class="custom-control-label" for="aliment_1">
+                            Sí
+                          </label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                          <input class="custom-control-input" type="radio" name="aliment" id="aliment_2"
+                            value="alimentNo">
+                          <label class="custom-control-label" for="aliment_2">
+                            No
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div>
+                      <label class="mb-0">¿Recibe Usted el módulo asignado por el gobierno?</label>
+                      <div class="col-3">
+                        <div class="custom-control custom-radio custom-control-inline">
+                          <input class="custom-control-input" type="radio" name="gobierno" id="gobierno_1"
+                            value="gobiernoSi" checked>
+                          <label class="custom-control-label" for="gobierno_1">
+                            Sí
+                          </label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                          <input class="custom-control-input" type="radio" name="gobierno" id="gobierno_2"
+                            value="gobiernoNo">
+                          <label class="custom-control-label" for="gobierno_2">
+                            No
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <hr class="mb-3 mt-0 bg-success">
+                    <div class="col-2" style="margin-top:21px;">
+                      <button type="submit" class="btn btn-warning">Confirmar</button>
+                    </div>
+                  </form>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+
+                </div>
+                <!-- /.card-footer-->
+              </div>
+              <br>
+
+              <!-- /.card -->
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <footer class="main-footer">
+      <strong>Copyright &copy; 2020 <a href="http://www.reduc.edu.cu">Universidad de Camagüey</a>.</strong>
+      All rights reserved.
+      <div class="float-right d-none d-sm-inline-block">
+        <b>Version</b> 0.0.1_rc
+      </div>
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+  </div>
+  <!-- ./wrapper -->
+
+  <!-- jQuery -->
+  <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+  <!-- Bootstrap 4 -->
+  <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!-- AdminLTE App -->
+  <script src="{% static 'js/adminlte.min.js' %}"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="{% static 'js/demo.js' %}"></script>
+
+</body>
+
+</html>

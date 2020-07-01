@@ -1,0 +1,10 @@
+{% extends "rest_framework/base.html" %}
+
+{# Override this template in your own templates directory to customize #}
+{% block title %}{% if name %}{{ name }} – {% endif %}Encuestas | COVID-19 {% endblock %}
+
+{% block branding %}
+<a class='navbar-brand' rel="nofollow" href='https://encuestacovid19.reduc.edu.cu/'>
+    Encuestas COVID-19
+</a>
+{% endblock %}

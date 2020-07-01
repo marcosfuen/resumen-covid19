@@ -1,0 +1,745 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+  <title>Estudiantes | Universidad de Camagüey</title>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{% static 'plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'css/adminlte.min.css' %}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link href="{% static 'css/leaflet.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/map.css' %}" rel="stylesheet" />
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'mapStudentApp:profile' %}" class="nav-link">Inicio</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="mailto:reportes@reduc.edu.cu" title = "reportes@reduc.edu.cu" class="nav-link">Contactenos</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'mapStudentApp:incidencia' %}" class="nav-link">Reportar Incidencias</a>
+      </li>
+    </ul>
+
+    <!-- SEARCH FORM -->
+    <!-- <form class="form-inline ml-3">
+      <div class="input-group input-group-sm">
+        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group-append">
+          <button class="btn btn-navbar" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </form> -->
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <!-- Messages Dropdown Menu -->
+      <!-- <li class="nav-item">
+        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button"><i
+            class="fas fa-th-large"></i></a>
+      </li> -->
+      <li class="nav-item">
+        <a href="{% url 'mapStudentApp:logout' %}" title = "Salir de la Aplicación" class="nav-link"><i class="fas fa-door-closed"></i></a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link">
+      <img src="{% static 'img/students.png' %}" alt="Estudiantes Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+      <span class="brand-text font-weight-light">Encuestas</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          {% if user.is_superuser or user.is_staff %}
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Administración
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'admin:index' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Todos</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'admin:auth_group_changelist' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Grupos</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'admin:auth_user_changelist' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Usuarios</p>
+                </a>
+              </li>
+              <hr>
+              <li class="nav-item">
+                <a href="{% url 'admin:mapStudentApp_zona_changelist' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Zona</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'admin:mapStudentApp_studentinformation_changelist' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Estudiantes</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'admin:mapStudentApp_encuesta_changelist' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Encuestas</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'admin:mapStudentApp_incidencias_changelist' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Incidencias</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'admin:mapStudentApp_resumen_changelist' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Resumen</p>
+                </a>
+              </li>
+              <hr>
+              <li class="nav-item">
+                <a href="/api/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>API</p>
+                </a>
+              </li>
+              <hr>
+            </ul>
+          </li>
+          {% endif %}
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-map"></i>
+              <p>
+                Mapas
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:profile' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Zonas</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          {% if user.is_superuser or user.is_staff %}
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-project-diagram"></i>
+                <p>
+                    Zonas
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{% url 'mapStudentApp:zona' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Crear zona</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        {% endif %}
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-atlas"></i>
+              <p>
+                Encuesta
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:encuesta' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Formulario</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p>
+                Resumen
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:totalPorZona' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Resumen por Zona</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:totalesEncuestasZona' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Resumen Total</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:mapPorZona' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Resumen por Fecha</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-book-reader"></i>
+              <p>
+                Incidencias
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:incidencia' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Formulario</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:allIncidencia' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Todas la Incidencias</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Zonas</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'mapStudentApp:profile' %}">Inicio</a></li>
+              <li class="breadcrumb-item active">Zonas</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Info boxes -->
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+              
+
+              <div class="info-box-content">
+                <span class="info-box-text">Total encuestas</span>
+                <span class="info-box-number">
+                  {% for t in totalEncuestas%}
+                   {{t}}
+                  {% endfor %}
+                </span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Total Zona en el dia</span>
+                <span class="info-box-number">{{totalZona}}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+
+          <!-- fix for small devices only -->
+          <div class="clearfix hidden-md-up"></div>
+
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-map"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Ubicados en Mapa</span>
+                <span class="info-box-number">{{totalMapa}}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Total Incidencias</span>
+                <span class="info-box-number">{{ allIncidencias }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title">Estudiantes</h5>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                 
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div id="map"></div>
+                    
+                      <!-- <label>Selecciona un Municipio</label>
+                      <select id="mapaMunicipios" onchange="estiloSelect()">
+                        <option value="" selected="selected">...........</option>
+                        <option value="Camagüey">Camagüey</option>
+                        <option value="Florida">Florida</option>
+                        <option value="Carlos Manuel de Céspedes">Carlos Manuel de Céspedes</option>
+                        <option value="Minas">Minas</option>
+                        <option value="Guáimaro">Guáimaro</option>
+                        <option value="Nuevitas">Nuevitas</option>
+                        <option value="Esmeralda">Esmeralda</option>
+                        <option value="Sibanicú">Sibanicú</option>
+                        <option value="Sierra de Cubitas">Sierra de Cubitas</option>
+                        <option value="Jimaguayú">Jimaguayú</option>
+                        <option value="Santa Cruz del Sur">Santa Cruz del Sur</option>
+                        <option value="Najasa">Najasa</option>
+                        <option value="Vertientes">Vertientes</option>
+                        <option value="TODOS">Todas las Provincias</option>
+                      </select> -->
+                      <div id="panel" style = "margin-left:0px; background-color:#D3D3D3;"></div>
+                      <div id="buscador">
+                        <input type="text" name="direccion" value="" id="direccion" size="40"
+                          placeholder="Buscar dirección Ej. La Vigía, Camagüey, Cuba" />
+                        <button type="button" class="btn btn-outline-primary btn-flat" onclick="direccion_buscador();">Buscar</button>
+                        <div id="resultado" />
+                      </div>
+                    <!-- /.chart-responsive -->
+                  </div>
+                  <!-- /.col -->
+                  
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- ./card-body -->
+              <div class="card-footer">
+               
+              </div>
+              <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <!-- Main row -->
+        <!-- /.row -->
+      </div><!--/. container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2020 <a href="http://www.reduc.edu.cu">Universidad de Camagüey</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 0.0.1_rc
+    </div>
+  </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+<!-- jQuery -->
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap -->
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- overlayScrollbars -->
+<script src="{% static 'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'js/adminlte.js' %}"></script>
+
+<!-- OPTIONAL SCRIPTS -->
+<script src="{% static 'js/demo.js' %}"></script>
+
+<!-- PAGE PLUGINS -->
+<!-- jQuery Mapael -->
+<script src="{% static 'plugins/jquery-mousewheel/jquery.mousewheel.js' %}"></script>
+<script src="{% static 'plugins/raphael/raphael.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-mapael/jquery.mapael.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-mapael/maps/usa_states.min.js' %}"></script>
+<!-- ChartJS -->
+<script src="{% static 'plugins/chart.js/Chart.min.js' %}"></script>
+
+<!-- PAGE SCRIPTS -->
+<script src="{% static 'js/pages/dashboard2.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/municipios.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/provincias.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/leaflet.js' %}"></script>
+<script type="text/javascript">
+    
+  var map = L.map( 'map', {
+      center: [21.3808308, -77.9169388],
+      /*center: [21.8, -79.5],*/
+      minZoom: 2,
+      zoom: 9
+  });
+
+   /*habilitar este codigo para cargar los mapas de internet*/
+   
+   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+
+  var camaguey = L.layerGroup().addTo(map);
+  
+  /* fin habilitar este codigo para cargar los mapas de internet*/
+ 
+  var estiloPopup = {'maxWidth': '300'}
+
+var iconoBase = L.Icon.extend({
+  options: {
+    iconSize:     [24, 39],
+    iconAnchor:   [16, 87],
+    popupAnchor:  [-3, -76]
+  }
+});
+   
+     var iconoAzul = new iconoBase({iconUrl: '{% static 'img/marker-icon.png' %}'});
+     var iconoRojo = new iconoBase({iconUrl: '{% static 'img/marker-icon-red.png' %}'});
+     var iconoVerde = new iconoBase({iconUrl: '{% static 'img/marker-icon-green.png' %}'});
+     var iconoYellow = new iconoBase({iconUrl: '{% static 'img/marker-icon-yellow.png' %}'});
+     var iconoBlack = new iconoBase({iconUrl: '{% static 'img/marker-icon-black.png' %}'});
+     
+     {% for zona__name, zona__latitude, zona__longitude, totalLifeYes, totalLifeNo, atetionYes, atetionNo, mfYes, mfNo, servicesYes, servicesNo, safYes, safNo, alimentYes, alimentNo, moduloGobSi, moduloGobNo, startDate, totalEnc in coordenadas %}
+        la = "{{zona__latitude}}".replace(' ', '.').replace(',', '.');
+        lo = "{{zona__longitude}}".replace(' ', '.').replace(',', '.');
+        {% if zona__latitude != None or zona__longitude != None %}
+           {% if mfNo > mfYes or safNo > safYes or servicesNo > servicesYes or  alimentNo > alimentYes or moduloGobNo > moduloGobSi %}
+             L.marker([la,lo], {icon: iconoRojo}).bindPopup("<h5>{{zona__name}}</h5>{{startDate}}<hr class='mb-3 mt-0 bg-danger'><strong>Total Encuesta: </strong>{{totalEnc}}<table><thead><tr><th>Preguntas</th><th> Total Si</th><th> Total No</th></tr></thead><tbody><tr><td>Vive Solo</td><td> {{totalLifeYes}}</td><td> {{totalLifeNo}}</td></tr><tr><td>Recibe atención de su familia</td><td> {{atetionYes}}</td><td> {{atetionNo}}</td></tr><tr><td>Recibe atención del médico de familia</td><td> {{mfYes}}</td><td> {{mfNo}}</td></tr><tr><td>Tiene Usted servicio de mensajería para obtener los medicamentos</td><td> {{servicesYes}}</td><td> {{servicesNo}}</td></tr><tr><td>Recibe atención del SAF para obtener los medicamentos</td><td> {{safYes}}</td><td> {{safNo}}</td></tr><tr><td>Tiene Usted servicio de mensajería para obtener los alimentos</td><td> {{alimentYes}}</td><td> {{alimentNo}}</td></tr><tr><td>Recibe Usted el módulo asignado por el gobierno</td><td> {{moduloGobSi}}</td><td> {{moduloGobNo}}</td></tr></tbody></table>", estiloPopup).addTo(map); 
+           {% elif  mfYes > mfNo and servicesYes > servicesNo and alimentYes > alimentNo or moduloGobSi > moduloGobNo %}
+             L.marker([la,lo], {icon: iconoVerde}).bindPopup("<h5>{{zona__name}}</h5>{{startDate}}<hr class='mb-3 mt-0 bg-success'><strong>Total Encuesta: </strong>{{totalEnc}}<table><thead><tr><th>Preguntas</th><th> Total Si</th><th> Total No</th></tr></thead><tbody><tr><td>Vive Solo</td><td> {{totalLifeYes}}</td><td> {{totalLifeNo}}</td></tr><tr><td>Recibe atención de su familia</td><td> {{atetionYes}}</td><td> {{atetionNo}}</td></tr><tr><td>Recibe atención del médico de familia</td><td> {{mfYes}}</td><td> {{mfNo}}</td></tr><tr><td>Tiene Usted servicio de mensajería para obtener los medicamentos</td><td> {{servicesYes}}</td><td> {{servicesNo}}</td></tr><tr><td>Recibe atención del SAF para obtener los medicamentos</td><td> {{safYes}}</td><td> {{safNo}}</td></tr><tr><td>Tiene Usted servicio de mensajería para obtener los alimentos</td><td> {{alimentYes}}</td><td> {{alimentNo}}</td></tr> <tr><td>Recibe Usted el módulo asignado por el gobierno</td><td> {{moduloGobSi}}</td><td> {{moduloGobNo}}</td></tr></tbody></table>", estiloPopup).addTo(map); 
+           {% else %}
+             L.marker([la,lo], {icon: iconoAzul}).bindPopup("<h5>{{zona__name}}</h5>{{startDate}}<hr class='mb-3 mt-0 bg-info'><strong>Total Encuesta: </strong>{{totalEnc}}<table><thead><tr><th>Preguntas</th><th> Total Si</th><th> Total No</th></tr></thead><tbody><tr><td>Vive Solo</td><td> {{totalLifeYes}}</td><td> {{totalLifeNo}}</td></tr><tr><td>Recibe atención de su familia</td><td> {{atetionYes}}</td><td> {{atetionNo}}</td></tr><tr><td>Recibe atención del médico de familia</td><td> {{mfYes}}</td><td> {{mfNo}}</td></tr><tr><td>Tiene Usted servicio de mensajería para obtener los medicamentos</td><td> {{servicesYes}}</td><td> {{servicesNo}}</td></tr><tr><td>Recibe atención del SAF para obtener los medicamentos</td><td> {{safYes}}</td><td> {{safNo}}</td></tr><tr><td>Tiene Usted servicio de mensajería para obtener los alimentos</td><td> {{alimentYes}}</td><td> {{alimentNo}}</td></tr><tr><td>Recibe Usted el módulo asignado por el gobierno</td><td> {{moduloGobSi}}</td><td> {{moduloGobNo}}</td></tr></tbody></table>", estiloPopup).addTo(map); 
+           {% endif %}
+        {% endif %}
+     {% endfor %}
+  
+  var popup = L.popup();
+
+  function onMapClick(e) {
+  popup
+      .setLatLng(e.latlng) // Sets the geographical point where the popup will open.
+      .setContent("Has hecho click en la coordenada:<br> " +  e.latlng.lat.toString() + "," +  e.latlng.lng.toString()) // Sets the HTML content of the popup.
+      .openOn(map); // Adds the popup to the map and closes the previous one. 
+  }
+  
+
+  map.on('click', onMapClick);
+  function getColor(d) {
+      return d == "Camagüey" ? '#800026' :
+             d == "Florida"  ? '#BD0026' :
+             d == "Carlos Manuel de Céspedes"  ? '#E31A1C' :
+             d == "Minas"  ? '#FC4E2A' :
+             d == "Guáimaro"   ? '#FD8D3C' :
+             d == "Nuevitas"   ? '#FEB24C' :
+             d == "Esmeralda"   ? '#FFFFFF' :
+             d == "Sibanicú"   ? '#FFFF00' :
+             d == "Sierra de Cubitas"   ? '#0000FF' :
+             d == "Jimaguayú"   ? '#B2FFFF' :
+             d == "Santa Cruz del Sur"   ? '#8C4966' :
+             d == "Najasa"   ? '#FF6890' :
+             d == "Vertientes"   ? '#0B4C5F' :
+                        '#F3E2A9';
+  }
+  function colorPuntos(d) { 
+      return d == "" ? '#FF0000' : 
+      d == "" ? '#00FF00' : 
+      d == "" ? '#0000FF' : 
+      d == "" ? '#FF00FF' :
+      d == "" ? '#FFFF00' :
+          '#F392A9'; 
+  };
+  function estiloMapaCuba (feature) {
+      return{
+          radius: 7,
+          fillColor: getColor(feature.properties.municipality), 
+          color: 'white', 
+          weight: 1,
+          opacity : 1,
+          fillOpacity : 0.8
+      };
+  };
+  function estiloSelect() {
+      var miSelect = document.getElementById("mapaMunicipios").value;
+  var muni = L.geoJSON(municipios, {
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, MarkerOptions);
+              },
+            filter: function(feature, layer) {								
+               if(miSelect != "TODOS")		
+                return (feature.properties.municipality == miSelect );
+                              else
+                                  if(feature.properties.province == "Camagüey")
+                                      return (feature.properties.municipality);
+            },	
+            style:style,
+            onEachFeature: onEachFeature	
+                  });
+                  
+      /*map.clearLayers;*/
+      map.addLayer(muni);
+      
+  };	
+  function style(feature) {
+      return {
+          fillColor: getColor(feature.properties.municipality),
+          weight: 2,
+          opacity: 1,
+          color: 'white',
+          dashArray: '3',
+          fillOpacity: 0.7
+      };
+  }
+  function highlightFeature(e) {
+      var layer = e.target;
+      console.log(layer.feature.properties.municipality)
+      layer.setStyle({
+          weight: 5,
+          color: '#666',
+          dashArray: '',
+          fillOpacity: 0.7
+      });
+      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+          layer.bringToFront();
+      }
+  }
+  function resetHighlight(e) {
+      geojson.resetStyle(e.target);
+  }
+  function onEachFeature(feature, layer) {
+      
+      layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+      });
+      if (feature.properties.province == "Camagüey") {
+          layer.bindTooltip(
+              feature.properties.municipality,
+              {
+                  permanent:true,
+                  direction:'center',
+                  className: 'countryLabel'
+              }
+      );
+      if (feature.properties.municipality == "Camagüey" && feature.properties.municipality) {
+          var popupContentCmg = '<img src="{% static 'images/camaguey.png' %}"/>' + "<h2>Datos Camagüey</h2>" + "<p>Municipio: " + feature.properties.municipality + "<p>" + "<p>Cantidad de Infectados: " + {{ cantidadInfectadosCmg }} + "<p>";
+          layer.bindPopup(popupContentCmg);
+      };
+      if (feature.properties.municipality == "Guáimaro" && feature.properties.municipality) {
+          var popupContentGua = '<img src="{% static 'images/guaimaro.png' %}"/>' + "<h2>Datos Guáimaro</h2>" + "<p>Municipio: " + feature.properties.municipality + "<p>" + "<p>Cantidad de Infectado: " + {{ cantidadInfectadosGua }} + "<p>";
+          layer.bindPopup(popupContentGua);
+      };
+      if (feature.properties.municipality == "Florida" && feature.properties.municipality) {
+          var popupContentFlor = '<img src="{% static 'images/florida.png' %}"/>' + "<h2>Datos Florida</h2>" + "<p>Municipio: " + feature.properties.municipality + "<p>" + "<p>Cantidad de Infectado: " + {{ cantidadInfectadosFlo }} + "<p>";
+          layer.bindPopup(popupContentFlor);
+      };
+      if (feature.properties.municipality == "Carlos Manuel de Céspedes" && feature.properties.municipality) {
+          var popupContentCar = '<img src="{% static 'images/cespedes.png' %}"/>' + "<h2>Datos Céspedes</h2>" + "<p>Municipio: " + feature.properties.municipality + "<p>" + "<p>Cantidad de Infectado: " + {{ cantidadInfectadosCmc }} + "<p>";
+          layer.bindPopup(popupContentCar);
+      };
+      if (feature.properties.municipality == "Minas" && feature.properties.municipality) {
+          var popupContentMin = '<img src="{% static 'images/minas.png' %}"/>' + "<h2>Datos Minas</h2>" + "<p>Municipio: " + feature.properties.municipality + "<p>" + "<p>Cantidad de Infectado: " + {{ cantidadInfectadosMin }} + "<p>";
+          layer.bindPopup(popupContentMin);
+      };
+      if (feature.properties.municipality == "Nuevitas" && feature.properties.municipality) {
+          var popupContentNuev = '<img src="{% static 'images/nuevitas.png' %}"/>' + "<h2>Datos Nuevitas</h2>" + "<p>Municipio: " + feature.properties.municipality + "<p>" + "<p>Cantidad de Infectado: " + {{ cantidadInfectadosNue }} + "<p>";
+          layer.bindPopup(popupContentNuev);
+      };
+      if (feature.properties.municipality == "Esmeralda" && feature.properties.municipality) {
+          var popupContentEsm = '<img src="{% static 'images/esmeralda.png' %}"/>' + "<h2>Datos Esmeralda</h2>" + "<p>Municipio: " + feature.properties.municipality + "<p>" + "<p>Cantidad de Infectado: " + {{ cantidadInfectadosEsm }} + "<p>";
+          layer.bindPopup(popupContentEsm);
+      };
+      if (feature.properties.municipality == "Sibanicú" && feature.properties.municipality) {
+          var popupContentSib = '<img src="{% static 'images/sibanicu.png' %}"/>' + "<h2>Datos Sibanicú</h2>" + "<p>Municipio: " + feature.properties.municipality + "<p>" + "<p>Cantidad de Infectado: " + {{ cantidadInfectadosSib }} + "<p>";
+          layer.bindPopup(popupContentSib);
+      };
+      if (feature.properties.municipality == "Sierra de Cubitas" && feature.properties.municipality) {
+          var popupContentSierr = '<img src="{% static 'images/SierraCubitas.png' %}"/>' + "<h2>Datos Cubitas</h2>" + "<p>Municipio: " + feature.properties.municipality + "<p>" + "<p>Cantidad de Infectado: " + {{ cantidadInfectadosSeC }} + "<p>";
+          layer.bindPopup(popupContentSierr);
+      };
+      if (feature.properties.municipality == "Jimaguayú" && feature.properties.municipality) {
+          var popupContentJim = '<img src="{% static 'images/jimaguayu.png' %}"/>' + "<h2>Datos Jimaguayú</h2>" + "<p>Municipio: " + feature.properties.municipality + "<p>" + "<p>Cantidad de Infectado: " + {{ cantidadInfectadosJma }} + "<p>";
+          layer.bindPopup(popupContentJim);
+      };
+      if (feature.properties.municipality == "Santa Cruz del Sur" && feature.properties.municipality) {
+          var popupContentSan = '<img src="{% static 'images/sanCruz.png' %}"/>' + "<h2>Datos Santa Cruz</h2>" + "<p>Municipio: " + feature.properties.municipality + "<p>" + "<p>Cantidad de Infectado: " + {{ cantidadInfectadosScs }} + "<p>";
+          layer.bindPopup(popupContentSan);
+      };
+      if (feature.properties.municipality == "Najasa" && feature.properties.municipality) {
+          var popupContentNaj = '<img src="{% static 'images/najasa.png' %}"/>' + "<h2>Datos Najasa</h2>" + "<p>Municipio: " + feature.properties.municipality + "<p>" + "<p>Cantidad de Infectado: " + {{ cantidadInfectadosNaj }} + "<p>";
+          layer.bindPopup(popupContentNaj);
+      };
+      if (feature.properties.municipality == "Vertientes" && feature.properties.municipality) {
+          var popupContentVert = '<img src="{% static 'images/vertientes.png' %}"/>' + "<h2>Datos Vertientes</h2>" + "<p>Municipio: " + feature.properties.municipality + "<p>" + "<p>Cantidad de Infectado: " + {{ cantidadInfectadosVer }} + "<p>";
+          layer.bindPopup(popupContentVert);
+      };
+
+      }
+      
+  }
+  var feature;
+  function elegirDireccion(lat1, lng1, lat2, lng2, tipo_osm) {
+          var loc1 = new L.LatLng(lat1, lng1);
+          var loc2 = new L.LatLng(lat2, lng2);
+          var bounds = new L.LatLngBounds(loc1, loc2);
+
+          if (feature) {
+              map.removeLayer(feature);
+          }
+          if (tipo_osm == "node") {
+              feature = L.circle(loc1, 25, { color: 'green', fill: false }).addTo(map);
+              map.fitBounds(bounds);
+              map.setZoom(18);
+          } else {
+              var loc3 = new L.LatLng(lat1, lng2);
+              var loc4 = new L.LatLng(lat2, lng1);
+
+              feature = L.polyline([loc1, loc4, loc2, loc3, loc1], { color: 'red' }).addTo(map);
+              map.fitBounds(bounds);
+          }
+  }
+  function direccion_buscador() {
+          var entrada = document.getElementById("direccion");
+
+          $.getJSON('https://nominatim.openstreetmap.org/search?format=json&limit=50&q=' + entrada.value, function (data) {
+              var items = [];
+
+              $.each(data, function (key, val) {
+                  bb = val.boundingbox;
+                  items.push("<li><a href='#' onclick='elegirDireccion(" + bb[0] + ", " + bb[2] + ", " + bb[1] + ", " + bb[3] + ", \"" + val.tipo_osm + "\");return false;'>" + val.display_name + '</a></li>');
+              });
+
+              $('#resultado').empty();
+              if (items.length != 0) {
+                  $('<p>', { html: "Resultados de la b&uacute;queda:" }).appendTo('#resultado');
+                  $('<ul/>', {
+                      'class': 'my-new-list',
+                      html: items.join('')
+                  }).appendTo('#resultado');
+              } else {
+                  $('<p>', { html: "Ningun resultado encontrado." }).appendTo('#resultado');
+              }
+          });
+      }
+  /*
+  geojson = L.geoJson(municipios, {
+      style: estiloMapaCuba,
+      onEachFeature: estiloSelect,
+  }).addTo(map);
+  */
+  /*comentar este codigo cuanado se cargen los mapas de internet*/
+  /*
+  geojson = L.geoJson(provincias, {
+      style: estiloMapaCuba,
+      onEachFeature: estiloSelect,
+  }).addTo(map);
+  /*fin comentar este codigo cuanado se cargen los mapas de internet*/
+</script>
+</body>
+</html>

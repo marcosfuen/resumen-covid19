@@ -1,0 +1,528 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Formulario | Incidencias | Estudiantes</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'css/adminlte.min.css' %}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+
+<body class="hold-transition sidebar-mini sidebar-collapse">
+  <!-- Site wrapper -->
+  <div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="{% url 'mapStudentApp:profile' %}" class="nav-link">Inicio</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="mailto:reportes@reduc.edu.cu" title = "reportes@reduc.edu.cu"  class="nav-link">Contactenos</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="{% url 'mapStudentApp:incidencia' %}" class="nav-link">Reportar Incidencias</a>
+        </li>
+      </ul>
+
+      <!-- SEARCH FORM -->
+      <form class="form-inline ml-3" method="get" action="{% url 'mapStudentApp:busquedaIncidencias' %}">
+        <div class="input-group input-group-sm">
+          <input class="form-control form-control-navbar" value="{{ query }}" name="q" type="search" placeholder="Buscar Incidencia" aria-label="Search" >
+          <div class="input-group-append">
+            <button class="btn btn-navbar" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Right navbar links -->
+      <ul class="navbar-nav ml-auto">
+        <!-- <li class="nav-item">
+          <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+            <i class="fas fa-th-large"></i>
+          </a>
+        </li> -->
+        <li class="nav-item">
+          <a href="{% url 'mapStudentApp:logout' %}" title = "Salir de la Aplicación" class="nav-link"><i class="fas fa-door-closed"></i></a>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <a href="{% url 'mapStudentApp:profile' %}" class="brand-link">
+        <img src="{% static 'img/students.png' %}" alt="Mapa Estudiante" class="brand-image img-circle elevation-3"
+          style="opacity: .8">
+        <span class="brand-text font-weight-light">Encuestas</span>
+      </a>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+               {% if user.is_superuser or user.is_staff %}
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Administración
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'admin:index' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Todos</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'admin:auth_group_changelist' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Grupos</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'admin:auth_user_changelist' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Usuarios</p>
+                  </a>
+                </li>
+                <hr>
+                <li class="nav-item">
+                  <a href="{% url 'admin:mapStudentApp_zona_changelist' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Zona</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'admin:mapStudentApp_studentinformation_changelist' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Estudiantes</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'admin:mapStudentApp_encuesta_changelist' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Encuestas</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'admin:mapStudentApp_incidencias_changelist' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Incidencias</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'admin:mapStudentApp_resumen_changelist' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Resumen</p>
+                  </a>
+                </li>
+                <hr>
+                <li class="nav-item">
+                  <a href="/api/" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>API</p>
+                  </a>
+                </li>
+                <hr>
+              </ul>
+            </li>
+            {% endif %}
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-map"></i>
+                <p>
+                  Mapas
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'mapStudentApp:profile' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Zonas</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            {% if user.is_superuser or user.is_staff %}
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-project-diagram"></i>
+                  <p>
+                      Zonas
+                      <i class="right fas fa-angle-left"></i>
+                  </p>
+              </a>
+              <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                      <a href="{% url 'mapStudentApp:zona' %}" class="nav-link">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>Crear zona</p>
+                      </a>
+                  </li>
+              </ul>
+          </li>
+          {% endif %}
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-atlas"></i>
+              <p>
+                Encuesta
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:encuesta' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Formulario</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p>
+                Resumen
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:totalPorZona' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Resumen por Zona</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:totalesEncuestasZona' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Resumen Total</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:mapPorZona' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Resumen por Fecha</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-book-reader"></i>
+                <p>
+                  Incidencias
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'mapStudentApp:incidencia' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Formulario</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'mapStudentApp:allIncidencia' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Todas la Incidencias</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Incidencia</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="{% url 'mapStudentApp:profile' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'mapStudentApp:incidencia' %}">Accounts</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'mapStudentApp:incidencia' %}">Profile</a></li>
+                <li class="breadcrumb-item active">Incidencia</li>
+              </ol>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <!-- Default box -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Incidencias Reportadas</h3>
+
+                  <div class="card-tools">
+                    <a class="btn btn-sm btn-outline-success btn-flat" href="{% url 'mapStudentApp:incidencia' %}"><i class="fas fa-plus-circle"></i> Adicionar </a>
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
+                      title="Collapse">
+                      <i class="fas fa-minus"></i></button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip"
+                      title="Remove">
+                      <i class="fas fa-times"></i></button>
+                      
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div  id="cargar"  class="card-body table-responsive p-0">
+                    <table class="table table-sm">
+                      {% if page_obj %}
+                      <thead >
+                          <tr>
+                              <th>Nombre</th>
+                              <th>Dirección</th>
+                              <th>Descripción</th>
+                              <th>Estado</th>
+                              <th>Fecha del reporte</th>
+                              <th>Acciones</th>    
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {% for p in page_obj %}
+                          <tr>
+                              <td>{{ p.name }}</td>
+                              <td>{{ p.address }}</td>
+                              <td>{{ p.incidencia }}</td>
+                              <td>
+                                {% if p.isResolve %}
+                                  <span class="badge bg-success">Resuelto</span>
+                                {% else %}
+                                  <span class="badge bg-danger">Por Resolver</span>
+                                {% endif %}  
+                              </td>
+                              <td>{{ p.startDate }}</td>
+                              <td>
+                                <div class="btn-group">
+                                  <a class="btn btn-sm btn-outline-info btn-flat" href="{% url 'mapStudentApp:editIncidencia' p.id %}"><i class="fas fa-edit"></i> Editar </a>
+                                  <!-- <a class="btn btn-sm btn-outline-danger btn-flat" href="{% url 'mapStudentApp:deleteIncidencia' p.id %}" onclick="return executeExample()"><i class="fas fa-times"></i> Borrar </a> -->
+                                  <button class="btn btn-sm btn-outline-danger btn-flat" onclick="executeExample('{{ p.id }}')"><i class="fas fa-times"></i> 
+                                    Borrar
+                                  </button>
+                                  <!--
+                                  <button type="button" class="btn btn-sm btn-outline-danger btn-flat" data-toggle="modal" data-target="#modal-danger" >
+                                    <i class="fas fa-times"></i> Borrar
+                                  </button>
+                                  <div class="modal fade" id="modal-danger">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content bg-danger">
+                                        <div class="modal-header">
+                                          <h4 class="modal-title">Eliminar</h4>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <p>¿Esta seguro que desea eliminar {{p.name}}?</p>
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                          <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                                          <a class="btn btn-outline-light" data-dismiss="modal" href="{% url 'mapStudentApp:deleteIncidencia' p.id %}"> Borrar </a>
+                                        </div>
+                                      </div>
+                                      -->
+                                      <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                  </div>
+                                </div>
+                              </td>
+                          </tr>
+                          {% endfor %}
+                          {% else %}
+                              <h3>No hay incidencia resportadas aún</h3>
+                          {% endif %}
+                      </tbody>
+                    </table>
+                    
+              </div>
+                <!-- /.card-body -->
+                
+                <!-- /.card-footer-->
+              </div>
+              <div class="card-footer clearfix">
+                <!-- <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                </ul> -->
+                {% if page_obj %}
+                        <ul class="pagination m-0 float-right">
+                            <span class="step-links">
+                                {% if page_obj.has_previous %}
+                                <a href="?{{parametros.urlencode}}">&laquo; inicio</a> |
+                                <a href="?page={{ page_obj.previous_page_number }}">anterior </a>
+                                {% endif %}
+                                <!-- {% for i in programs.paginator.page_range %}
+                                        {% if programs.number == i%}
+                                            <a href="?page={{ programs.next_page_number }}" onclick="return false;" title="{{Disables}}">{{ i }}</a>
+                                        {% else %}
+                                            <a href="?page={{ i }}" title="{{ i }}">{{ i }}</a>
+                                        {% endif %}
+                                    {% endfor %} -->
+                                <span class="current">
+                                    pagína {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+                                </span>
+
+                                {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}">siguiente </a> |
+                                <a href="?page={{ page_obj.paginator.num_pages }}">ultimo
+                                    &raquo;</a>
+                                {% endif %}
+                            </span>
+                        </ul>
+                    {% endif %}
+              </div>
+              
+              <!-- /.card -->
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <footer class="main-footer">
+      <strong>Copyright &copy; 2020 <a href="http://www.reduc.edu.cu">Universidad de Camagüey</a>.</strong>
+      All rights reserved.
+      <div class="float-right d-none d-sm-inline-block">
+        <b>Version</b> 0.0.1_rc
+      </div>
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+  </div>
+  <!-- ./wrapper -->
+
+  <!-- jQuery -->
+  <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+  <!-- Bootstrap 4 -->
+  <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!-- AdminLTE App -->
+  <script src="{% static 'js/adminlte.min.js' %}"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="{% static 'js/demo.js' %}"></script>
+  <script src="{% static 'js/sweetalert.js' %}"></script>
+
+</body>
+
+</html>
+<script type="text/javascript">
+  function executeExample(id) {
+    Swal.fire({
+      title: 'Esta seguro?',
+      text: "Esta operación no sera revertida",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar'
+    }).then((result) => {
+      if (result.value) {
+        var request = $.ajax({
+          type: "POST",
+          url: "/accounts/profile/deleteIncidencia/"+id,
+          data: {
+              "csrfmiddlewaretoken": "{{ csrf_token }}",
+              "id": id                    
+          },
+        });
+        request.done(function(response) {
+          Swal.fire(
+          'Borrado!',
+          'Ha borrado correctamente la incidencia.',
+          'success',
+          $("#cargar").load('{% url 'mapStudentApp:allIncidencia' %} div#cargar'),
+           
+        )
+          
+        });
+        
+      }
+    })
+      
+    /*
+    Swal.fire({
+      title: 'Esta seguro?',
+      text: "Esta operacón no sera revertida",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar'
+    }).then((result) => {
+      if (result.value) {
+        Swal.fire(
+          'Borrado!',
+          'Ha borrado correctamente la incidencia.',
+          'success'
+        )
+      }
+    })
+    */
+  }
+  $('#busIncidencia').keyup(function(e){
+    consulta = $("#busIncidencia").val();
+    $.ajax({
+      data: {
+        'address': consulta
+      },
+      url: '{% url 'mapStudentApp:busquedaIncidencias' %}',
+      type: 'get',
+      success : function(data) {
+              console.log(data);
+      },
+      error : function(message) {
+              console.log(message);
+          }
+      });
+   });
+</script>

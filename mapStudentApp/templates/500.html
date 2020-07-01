@@ -1,0 +1,329 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Encuestas UC | 500 Error Interno</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'css/adminlte.min.css' %}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'mapStudentApp:profile' %}" class="nav-link">Inicio</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="mailto:reportes@reduc.edu.cu" title = "reportes@reduc.edu.cu" class="nav-link">Contactenos</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'mapStudentApp:incidencia' %}" class="nav-link">Reportar Incidencias</a>
+      </li>
+    </ul>
+
+    <!-- SEARCH FORM -->
+    <!-- <form class="form-inline ml-3">
+      <div class="input-group input-group-sm">
+        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group-append">
+          <button class="btn btn-navbar" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </form> -->
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <!-- Messages Dropdown Menu -->
+      <!-- <li class="nav-item">
+        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button"><i
+            class="fas fa-th-large"></i></a>
+      </li> -->
+      <li class="nav-item">
+        <a href="{% url 'mapStudentApp:logout' %}" title = "Salir de la Aplicación" class="nav-link"><i class="fas fa-door-closed"></i></a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link">
+      <img src="{% static 'img/students.png' %}" alt="Estudiantes Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+      <span class="brand-text font-weight-light">Encuestas</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          {% if user.is_superuser or user.is_staff %}
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Administración
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'admin:index' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Todos</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'admin:auth_group_changelist' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Grupos</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'admin:auth_user_changelist' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Usuarios</p>
+                </a>
+              </li>
+              <hr>
+              <li class="nav-item">
+                <a href="{% url 'admin:mapStudentApp_zona_changelist' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Zona</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'admin:mapStudentApp_studentinformation_changelist' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Estudiantes</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'admin:mapStudentApp_encuesta_changelist' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Encuestas</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'admin:mapStudentApp_incidencias_changelist' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Incidencias</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'admin:mapStudentApp_resumen_changelist' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Resumen</p>
+                </a>
+              </li>
+              <hr>
+              <li class="nav-item">
+                <a href="/api/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>API</p>
+                </a>
+              </li>
+              <hr>
+            </ul>
+          </li>
+          {% endif %}
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-map"></i>
+              <p>
+                Mapas
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:profile' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Zonas</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          {% if user.is_superuser or user.is_staff %}
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-project-diagram"></i>
+                <p>
+                    Zonas
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{% url 'mapStudentApp:zona' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Crear zona</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        {% endif %}
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-atlas"></i>
+            <p>
+              Encuesta
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'mapStudentApp:encuesta' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Formulario</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-table"></i>
+            <p>
+              Resumen
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'mapStudentApp:totalPorZona' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Resumen por Zona</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'mapStudentApp:totalesEncuestasZona' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Resumen Total</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'mapStudentApp:mapPorZona' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Resumen por Fecha</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-book-reader"></i>
+              <p>
+                Incidencias
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:incidencia' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Formulario</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'mapStudentApp:allIncidencia' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Todas la Incidencias</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>500 Error interno</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">inicio</a></li>
+              <li class="breadcrumb-item active">500 Error interno</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="error-page">
+        <h2 class="headline text-danger"> 500</h2>
+
+        <div class="error-content">
+          <h3><i class="fas fa-exclamation-triangle text-danger"></i> Oops! Problemas en el servidor grave.</h3>
+
+          <p>
+            Estamos trabajando para solucionar a cualquier costo el problema.
+            Mientras tanto, puede tomarse un café, no hay de otra.
+          </p>
+         
+        </div>
+        <!-- /.error-content -->
+      </div>
+      <!-- /.error-page -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2020 <a href="http://www.reduc.edu.cu">Universidad de Camagüey</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 0.0.1_rc
+    </div>
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'js/adminlte.min.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'js/demo.js' %}"></script>
+</body>
+</html>
