@@ -1,4 +1,4 @@
-# Aplicación encuesta de la UC para el COVOD-19
+# Aplicación encuesta para el COVOD-19
 
 _Aplicación web para encuesta de la covid19_
 
